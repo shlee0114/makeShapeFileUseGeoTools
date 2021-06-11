@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    maven { url "https://repo.osgeo.org/repository/release/"}
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.geotools:gt-epsg-hsql:25.1'
+    implementation 'org.geotools:gt-referencing:25.1'
+    implementation'org.geotools:gt-main:25.1'
+    implementation'org.geotools:gt-shapefile:25.1'
+    implementation'org.geotools:gt-geojson:25.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
+}
+
+test {
+    useJUnitPlatform()
+}
