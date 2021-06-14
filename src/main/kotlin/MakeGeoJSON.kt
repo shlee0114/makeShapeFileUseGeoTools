@@ -2,8 +2,12 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 class MakeGeoJSON {
-    fun makeGeoJSON(type : String, geometry : ArrayList<ArrayList<Float>>) : String{
-        return generateGeoJSON(type, geometry)
+    //type : 폴리곤의 타입 예) Point, LineString, Polygon
+    //geometry : 좌표값 [[x, y],[x,y]]형식의 배열
+    //path : geoJson파일이 저장될 파일 경로 및 파일 이름
+    fun makeGeoJSON(type : String, geometry : ArrayList<ArrayList<Float>>, path : String) : String{
+        generateGeoJSON(type, geometry, path)
+        return path
     }
     fun makeMultiGeoJSON(type : String, geometry : ArrayList<ArrayList<ArrayList<Float>>>){
         when(type){
@@ -19,14 +23,17 @@ class MakeGeoJSON {
         }
     }
 
-    private fun generateGeoJSON(type : String, geometry: ArrayList<ArrayList<Float>>) : String{
+    //type : 폴리곤의 타입 예) Point, LineString, Polygon
+    //geometry : 좌표값 [[x, y],[x,y]]형식의 배열
+    //path : geoJson파일이 저장될 파일 경로 및 파일 이름
+    private fun generateGeoJSON(type : String, geometry: ArrayList<ArrayList<Float>>, path : String){
         var coordinate = ""
         for(i in geometry){
             coordinate += "[${i[0]}, ${i[1]}], "
         }
         coordinate = coordinate.removeRange(coordinate.lastIndex - 1, coordinate.lastIndex)
 
-        val test =  "{\n" +
+        val geoJson =  "{\n" +
                 "  \"type\": \"FeatureCollection\",\n" +
                 "  \"features\": [\n" +
                 "    {\n" +
@@ -40,10 +47,9 @@ class MakeGeoJSON {
                 "  ]\n" +
                 "}"
 
-        val path = "C:\\test\\test.json"
-        val testFile = File(path)
-        testFile.writeText(test)
-        testFile.createNewFile()
-        return path
+        File(path).apply {
+            writeText(geoJson)
+            createNewFile()
+        }
     }
 }
