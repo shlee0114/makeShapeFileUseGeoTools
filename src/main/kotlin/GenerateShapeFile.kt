@@ -1,25 +1,26 @@
-
-import org.geotools.feature.FeatureCollection
-import org.geotools.geojson.feature.FeatureJSON
-import org.geotools.geojson.geom.GeometryJSON
-import org.opengis.feature.simple.SimpleFeature
+import org.geotools.data.DataUtilities
+import org.geotools.geometry.jts.JTSFactoryFinder
+import org.locationtech.jts.geom.Coordinate
 import org.opengis.feature.simple.SimpleFeatureType
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
+
 class GenerateShapeFile{
     //path : 파일을 저장할 경로
-    //geoJson : geoJson파일이 저장되어있는 경로 및 파일 명
-    fun generateShpFile(path : String, geoJson : String){
-        val shpFile  = File(path)
+    //coordinate : 추출할 좌표값들 Coordinate 생성 방법 -> Coordinate(x, y)
+    fun generateShpFile(path : String, coordinate : Array<Coordinate>){
 
-        //val geoJson = test.makeGeoJSON("LineString", geom)
-        val inpS : InputStream = FileInputStream(File(geoJson))
-        val featureJSON = FeatureJSON(GeometryJSON(15))
-        val fc = featureJSON.readFeatureCollection(inpS)
+        val geometry = JTSFactoryFinder.getGeometryFactory()
+        val lineString = geometry.createLineString(coordinate)
+        val schema: SimpleFeatureType = DataUtilities.createType("LINE", "centerline:LineString,name:\"\",id:0")
 
-        val writer = WriteShapefile(shpFile)
-        writer.writeFeatures(fc as FeatureCollection<SimpleFeatureType, SimpleFeature>)
+        val feature = DataUtilities.template(schema).apply {
+            defaultGeometry = lineString
+        }
+
+        val collection = DataUtilities.collection(feature)
+
+        WriteShapefile(File(path)).also {
+            it.writeFeatures(collection)
+        }
     }
 }
-
