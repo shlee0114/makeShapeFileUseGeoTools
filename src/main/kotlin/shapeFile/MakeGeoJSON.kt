@@ -1,4 +1,5 @@
-import kotlinx.serialization.json.Json
+package shapeFile
+
 import java.io.File
 
 class MakeGeoJSON {

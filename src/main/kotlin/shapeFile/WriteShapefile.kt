@@ -1,3 +1,5 @@
+package shapeFile
+
 import org.geotools.data.DataUtilities
 import org.geotools.data.DefaultTransaction
 import org.geotools.data.Transaction
