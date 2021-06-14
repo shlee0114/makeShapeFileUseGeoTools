@@ -1,4 +1,4 @@
-package shapeFile
+package com.tlgj255.shapeFile
 import org.geotools.data.DataUtilities
 import org.geotools.geometry.jts.JTSFactoryFinder
 import org.locationtech.jts.geom.Coordinate

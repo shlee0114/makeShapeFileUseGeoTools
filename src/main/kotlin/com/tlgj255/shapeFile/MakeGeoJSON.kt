@@ -1,4 +1,4 @@
-package shapeFile
+package com.tlgj255.shapeFile
 
 import java.io.File
 
